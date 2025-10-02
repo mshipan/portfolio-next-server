@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import http, { Server } from "http";
 import app from "./app";
 import { prisma } from "./config/db";

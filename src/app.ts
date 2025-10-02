@@ -2,6 +2,8 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import notFound from "./middlewares/notFound";
 
 const app = express();
 dotenv.config();
@@ -19,15 +21,14 @@ app.use(cors(corsConfig));
 app.options("", cors(corsConfig));
 app.use(compression());
 
+// Root Route
 app.get("/", (_req, res) => {
   res.send("Welcome to Portfolio Server");
 });
 
-app.use((req, res, next) => {
-  res.status(404).json({
-    success: false,
-    message: "Route Not Found.",
-  });
-});
+// Routes
+
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;
