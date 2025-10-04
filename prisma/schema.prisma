@@ -15,10 +15,13 @@ model User {
   name String?
   role String @default("owner")
   createdAt DateTime @default(now())
+  blogs Blog[]
 }
 
 model Blog {
   id String @id @default(cuid())
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
   title String
   slug String @unique
   summary String?
@@ -34,7 +37,9 @@ model Project {
   title String
   slug String @unique
   description String
+  techStack String[]
   features String[]
+  featured Boolean @default(false)
   repoUrl String?
   liveUrl String?
   thumbnail String?

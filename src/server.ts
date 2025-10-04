@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 import http, { Server } from "http";
 import app from "./app";
-import { prisma } from "./config/db";
+import { prisma } from "./app/config/db";
+import { seedOwner } from "./app/utils/seedOwner";
 
 let server: Server | null = null;
 
@@ -66,4 +67,7 @@ function handleProcessEvents() {
   });
 }
 
-startServer();
+(async () => {
+  await startServer();
+  await seedOwner();
+})();

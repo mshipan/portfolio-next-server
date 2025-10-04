@@ -2,8 +2,9 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
-import notFound from "./middlewares/notFound";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
+import notFound from "./app/middlewares/notFound";
+import { router } from "./app/routes";
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,7 @@ app.get("/", (_req, res) => {
 });
 
 // Routes
+app.use("/api/v1", router);
 
 app.use(globalErrorHandler);
 app.use(notFound);
