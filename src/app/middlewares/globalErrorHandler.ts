@@ -3,13 +3,18 @@
 
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errorHelpers/AppError";
+import { deleteImageFromCloudinary } from "../config/cloudinary.config";
 
-export const globalErrorHandler = (
+export const globalErrorHandler = async (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  if (req.file) {
+    await deleteImageFromCloudinary(req.file.path);
+  }
+
   let statusCode = 500;
   let message = `Something went wrong ${err.message}`;
 

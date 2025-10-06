@@ -3,9 +3,17 @@ import { catchAsync } from "../../utils/catchAsync";
 import { ProjectServices } from "./project.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
+import { Prisma } from "@prisma/client";
 
 const createProject = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProjectServices.createProject(req.body);
+  req.body = JSON.parse(req.body.data) || req.body;
+
+  const payload: Prisma.ProjectCreateInput = {
+    ...req.body,
+    thumbnail: req.file?.path,
+  };
+
+  const result = await ProjectServices.createProject(payload);
 
   sendResponse(res, {
     success: true,
@@ -40,9 +48,15 @@ const getSingleProject = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateProject = catchAsync(async (req: Request, res: Response) => {
+  req.body = JSON.parse(req.body.data) || req.body;
+
+  const payload: Prisma.ProjectUpdateInput = {
+    ...req.body,
+    thumbnail: req.file?.path,
+  };
   const slug = req.params.slug as string;
 
-  const result = await ProjectServices.updateProject(slug, req.body);
+  const result = await ProjectServices.updateProject(slug, payload);
 
   sendResponse(res, {
     success: true,

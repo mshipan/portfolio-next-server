@@ -18,6 +18,7 @@ const corsConfig = {
 
 // Middlewires
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsConfig));
 app.options("", cors(corsConfig));
 app.use(compression());

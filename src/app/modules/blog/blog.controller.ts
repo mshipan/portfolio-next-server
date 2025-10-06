@@ -3,9 +3,16 @@ import { catchAsync } from "../../utils/catchAsync";
 import { BlogServices } from "./blog.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
+import { Prisma } from "@prisma/client";
 
 const createBlog = catchAsync(async (req: Request, res: Response) => {
-  const result = await BlogServices.createBlog(req.body);
+  req.body = JSON.parse(req.body.data) || req.body;
+
+  const payload: Prisma.BlogCreateInput = {
+    ...req.body,
+    coverUrl: req.file?.path,
+  };
+  const result = await BlogServices.createBlog(payload);
 
   sendResponse(res, {
     success: true,
@@ -40,9 +47,16 @@ const getSingleBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
+  req.body = JSON.parse(req.body.data) || req.body;
+
+  const payload: Prisma.BlogUpdateInput = {
+    ...req.body,
+    coverUrl: req.file?.path,
+  };
+
   const slug = req.params.slug as string;
 
-  const result = await BlogServices.updateBlog(slug, req.body);
+  const result = await BlogServices.updateBlog(slug, payload);
 
   sendResponse(res, {
     success: true,
