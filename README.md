@@ -15,7 +15,7 @@ Supports authentication, blogs, projects, and a detailed about section (with ski
 - [API Endpoints](#api-endpoints)
 - [Database](#database)
 - [Multer & Cloudinary](#multer--cloudinary)
-- [Postman Collection](#postman--collection)
+- [Postman Collection](#postman-collection)
 - [License](#license)
 
 ---
