@@ -1,0 +1,708 @@
+{
+	"info": {
+		"_postman_id": "7ee21c51-3674-4dd7-9dba-144eb5862691",
+		"name": "portfolio-next",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31705206",
+		"_collection_link": "https://www.postman.com/maintenance-geologist-33374708/workspace/test/collection/31705206-7ee21c51-3674-4dd7-9dba-144eb5862691?action=share&source=collection_link&creator=31705206"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mshipan657@gmail.com\",\r\n    \"password\": \"PHero_Shipan@437\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get New Access Token By Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/refresh-token",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "blog",
+			"item": [
+				{
+					"name": "Create Blog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"authorId\": \"cmgah31t20000vku4069afr6v\", \n  \"title\": \"Building a Portfolio with Next.js, Express, and Prisma test multer file 2\",\n  \"summary\": \"A step-by-step guide to creating a full-stack portfolio app using Next.js, Express, and Prisma.\",\n  \"content\": \"In this article, we'll explore how to build a modern portfolio website with authentication, a dashboard, and dynamic blog management using Next.js and Prisma...\",\n  \"published\": true\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/wgferg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/blog",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"blog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Blogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/blog",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"blog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/blog/portfolio-nextjs-express-prisma",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"blog",
+								"portfolio-nextjs-express-prisma"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Blog",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"title\": \"Building a Portfolio with Next.js, Express, and Prisma 2 test 3\",\n  \"summary\": \"test 1 A step-by-step guide to creating a full-stack portfolio app using Next.js, Express, and Prisma.\",\n  \"content\": \"In this article, we'll explore how to build a modern portfolio website with authentication, a dashboard, and dynamic blog management using Next.js and Prisma...\",\n  \"published\": true\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/300232927_400036508920050_4866572481816521050_n.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/blog/building-a-portfolio-with-nextjs-express-and-prisma-2-test-3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"blog",
+								"building-a-portfolio-with-nextjs-express-and-prisma-2-test-3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Blog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/blog/portfolio-nextjs-express-prisma",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"blog",
+								"portfolio-nextjs-express-prisma"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "project",
+			"item": [
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"title\": \"Portfolio v3 with Next.js and Express test multer 2\",\n  \"description\": \"A full-stack portfolio management system for handling blogs and projects.\",\n  \"techStack\": [\"Next.js\", \"TypeScript\", \"Express.js\", \"Prisma\", \"PostgreSQL\"],\n  \"features\": [\n    \"Admin dashboard for managing content\",\n    \"JWT authentication\",\n    \"Dynamic routing for blogs and projects\"\n  ],\n  \"featured\": true,\n  \"repoUrl\": \"https://github.com/shipan/portfolio-cms\",\n  \"liveUrl\": \"https://portfolio.shipan.dev\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/1500x500.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/project",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/project",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/project/portfolio-cms-with-nextjs-and-express",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"portfolio-cms-with-nextjs-and-express"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Project",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"title\": \"Portfolio Dashboard with Next.js and Prisma 2 test 3 multer 3\",\n  \"description\": \"An admin dashboard for managing portfolio blogs and projects.\",\n  \"techStack\": [\"Next.js\", \"Prisma\", \"Express\", \"TypeScript\"],\n  \"liveUrl\": \"https://myportfolio.com\",\n  \"repoUrl\": \"https://github.com/shipan/portfolio-dashboard\",\n  \"featured\": true\n}\n",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/wgferg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/project/portfolio-cms-with-nextjs-and-express-test-multer-2",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"portfolio-cms-with-nextjs-and-express-test-multer-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Portfolio Dashboard with Next.js and Prisma 2\",\r\n  \"description\": \"An admin dashboard for managing portfolio blogs and projects.\",\r\n  \"techStack\": [\"Next.js\", \"Prisma\", \"Express\", \"TypeScript\"],\r\n  \"liveUrl\": \"https://myportfolio.com\",\r\n  \"repoUrl\": \"https://github.com/shipan/portfolio-dashboard\",\r\n  \"thumbnail\": \"https://cdn.myportfolio.com/project-thumb.png\",\r\n  \"featured\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/portfolio-cms-with-nextjs-and-express",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"portfolio-cms-with-nextjs-and-express"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "about",
+			"item": [
+				{
+					"name": "Create About (upSert)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"name\": \"Shipan Mallik\",\n  \"title\": \"Full Stack Developer\",\n  \"bio\": \"I'm a passionate full stack developer specializing in Next.js, Node.js, and Prisma. I love building efficient, scalable web applications.\",\n  \"email\": \"shipan@example.com\",\n  \"phone\": \"01783567789\",\n  \"address\": \"Dhaka, Bangladesh\"\n}\n",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/wgferg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/about",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update About (upSert)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n  \"name\": \"Shipan Mallik 2\",\n  \"title\": \"Full Stack Developer\",\n  \"bio\": \"I'm a passionate full stack developer specializing in Next.js, Node.js, and Prisma. I love building efficient, scalable web applications.\",\n  \"email\": \"shipan@example.com\",\n  \"phone\": \"01783567789\",\n  \"address\": \"Dhaka, Bangladesh\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/aboutMe.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/about",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get About",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Experience",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/experience/cmgde5ldw0001vkp8g63crzzk",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"experience",
+								"cmgde5ldw0001vkp8g63crzzk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Education",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/education/cmgde5ldw0003vkp8yqlare7o",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"education",
+								"cmgde5ldw0003vkp8yqlare7o"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Skills",
+			"item": [
+				{
+					"name": "Create Skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n\"name\": \"Tailwind CSS test 2\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/mship/Downloads/306138644_447928154020454_1146521082458314722_n.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/about/skill",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"skill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Skills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/skill",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"skill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Skill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/skill/cmgg928e70001vkw430bhjew1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"skill",
+								"cmgg928e70001vkw430bhjew1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Experience",
+			"item": [
+				{
+					"name": "Create Experience",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"Senior Full Stack Developer\",\r\n  \"company\": \"NextGen Solutions Ltd.\",\r\n  \"startYear\": \"2024\",\r\n  \"endYear\": \"2025\",\r\n  \"description\": \"Developing and maintaining full stack web applications using Next.js, Node.js, Prisma, and PostgreSQL.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/about/experience",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"experience"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Experience",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/experience",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"experience"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Experience",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/experience/cmgg928e70008vkw41kp8xx5p",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"experience",
+								"cmgg928e70008vkw41kp8xx5p"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Education",
+			"item": [
+				{
+					"name": "Create Education",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"degree\": \"BSc in Computer Science\",\r\n  \"institution\": \"University of Dhaka\",\r\n  \"startYear\": \"2018\",\r\n  \"endYear\": \"2022\",\r\n  \"description\": \"Studied software engineering, databases, and web development.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/about/education",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"education"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Education",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/education",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"education"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Education",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/about/education/cmgg928ee000avkw48ijwo10c",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"about",
+								"education",
+								"cmgg928ee000avkw48ijwo10c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": ""
+		}
+	]
+}
