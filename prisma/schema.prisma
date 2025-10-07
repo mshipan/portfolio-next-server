@@ -55,7 +55,8 @@ model About {
   email String
   phone String?
   address String?
-  skills String[]
+  photo String?
+  skills Skill[]
   experiences Experience[]
   educations Education[]
   createdAt DateTime @default(now())
@@ -82,4 +83,12 @@ model Education {
   description String?
   aboutId String
   about About @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id String @id @default(cuid())
+  name String
+  photo String?
+  aboutId String?
+  about About? @relation(fields: [aboutId],references: [id],onDelete: Cascade)
 }

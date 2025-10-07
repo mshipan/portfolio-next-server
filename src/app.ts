@@ -1,13 +1,16 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import compression from "compression";
 import cors from "cors";
 import express from "express";
-import dotenv from "dotenv";
+import expressSession from "express-session";
+import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import { router } from "./app/routes";
 
 const app = express();
-dotenv.config();
 
 const corsConfig = {
   origin: ["http://localhost:3000"],
@@ -17,7 +20,16 @@ const corsConfig = {
 };
 
 // Middlewires
+app.use(
+  expressSession({
+    secret: process.env.EXPRESS_SESSION_SECRET as string,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
+app.set("trust proxy", 1);
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsConfig));
 app.options("", cors(corsConfig));

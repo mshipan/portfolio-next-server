@@ -17,12 +17,16 @@ const createOrUpdateAbout = async (payload: Prisma.AboutCreateInput) => {
       email: payload.email,
       phone: payload.phone ?? null,
       address: payload.address ?? null,
-      skills: payload.skills ?? [],
+      photo: payload.photo ?? null,
+      skills: {
+        create: payload.skills as Prisma.SkillCreateWithoutAboutInput[],
+      },
       experiences: {
-        create: payload.experiences?.create || [],
+        create:
+          payload.experiences as Prisma.ExperienceCreateWithoutAboutInput[],
       },
       educations: {
-        create: payload.educations?.create || [],
+        create: payload.educations as Prisma.EducationCreateWithoutAboutInput[],
       },
     },
     create: {
@@ -33,15 +37,20 @@ const createOrUpdateAbout = async (payload: Prisma.AboutCreateInput) => {
       email: payload.email,
       phone: payload.phone ?? null,
       address: payload.address ?? null,
-      skills: payload.skills ?? [],
+      photo: payload.photo ?? null,
+      skills: {
+        create: payload.skills as Prisma.SkillCreateWithoutAboutInput[],
+      },
       experiences: {
-        create: payload.experiences?.create || [],
+        create:
+          payload.experiences as Prisma.ExperienceCreateWithoutAboutInput[],
       },
       educations: {
-        create: payload.educations?.create || [],
+        create: payload.educations as Prisma.EducationCreateWithoutAboutInput[],
       },
     },
     include: {
+      skills: true,
       experiences: true,
       educations: true,
     },
