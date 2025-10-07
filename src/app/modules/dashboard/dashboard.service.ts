@@ -53,6 +53,7 @@ const getDashboardOverview = async () => {
 
   const about = await prisma.about.findFirst({
     include: {
+      skills: true,
       experiences: true,
       educations: true,
     },

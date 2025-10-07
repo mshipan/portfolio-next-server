@@ -11,7 +11,25 @@ router.post(
   checkAuth("owner"),
   AboutController.createOrUpdateAbout
 );
+router.post(
+  "/skill",
+  checkAuth("owner"),
+  multerUpload.single("file"),
+  AboutController.createSkill
+);
+router.post(
+  "/experience",
+  checkAuth("owner"),
+  AboutController.createExperience
+);
+router.post("/education", checkAuth("owner"), AboutController.createEducation);
+
 router.get("/", AboutController.getAbout);
+router.get("/skill", AboutController.getAllSkills);
+router.get("/experience", AboutController.getAllExperiences);
+router.get("/education", AboutController.getAllEducations);
+
+router.delete("/skill/:id", checkAuth("owner"), AboutController.deleteSkill);
 router.delete(
   "/experience/:id",
   checkAuth("owner"),
