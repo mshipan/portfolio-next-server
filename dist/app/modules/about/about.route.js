@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AboutRoutes = void 0;
+const express_1 = require("express");
+const about_controller_1 = require("./about.controller");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const multer_config_1 = require("../../config/multer.config");
+const router = (0, express_1.Router)();
+router.post("/", multer_config_1.multerUpload.single("file"), (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.createOrUpdateAbout);
+router.post("/skill", (0, checkAuth_1.checkAuth)("owner"), multer_config_1.multerUpload.single("file"), about_controller_1.AboutController.createSkill);
+router.post("/experience", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.createExperience);
+router.post("/education", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.createEducation);
+router.get("/", about_controller_1.AboutController.getAbout);
+router.get("/skill", about_controller_1.AboutController.getAllSkills);
+router.get("/experience", about_controller_1.AboutController.getAllExperiences);
+router.get("/education", about_controller_1.AboutController.getAllEducations);
+router.delete("/skill/:id", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.deleteSkill);
+router.delete("/experience/:id", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.deleteExperience);
+router.delete("/education/:id", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.deleteEducation);
+exports.AboutRoutes = router;
+//# sourceMappingURL=about.route.js.map
