@@ -51,12 +51,26 @@ const createSkill = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
     });
 }));
 const getAllSkills = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const skills = yield about_service_1.AboutServices.getAllSkills();
+    const skills = yield about_service_1.AboutServices.getAllSkills(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Skills retrieved successfully.",
-        data: skills,
+        data: skills.data,
+        meta: skills.meta,
+    });
+}));
+const updateSkill = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { id } = req.params;
+    req.body = JSON.parse(req.body.data) || req.body;
+    const payload = Object.assign(Object.assign({}, req.body), { photo: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
+    const result = yield about_service_1.AboutServices.updateSkill(id, payload);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Skill updated successfully.",
+        data: result,
     });
 }));
 const deleteSkill = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,12 +93,23 @@ const createExperience = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(vo
     });
 }));
 const getAllExperiences = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const experience = yield about_service_1.AboutServices.getAllExperiences();
+    const result = yield about_service_1.AboutServices.getAllExperiences(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Experiences retrieved successfully.",
-        data: experience,
+        meta: result.meta,
+        data: result.data,
+    });
+}));
+const updateExperience = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield about_service_1.AboutServices.updateExperience(id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Experience updated successfully.",
+        data: result,
     });
 }));
 const deleteExperience = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -107,12 +132,23 @@ const createEducation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(voi
     });
 }));
 const getAllEducations = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const education = yield about_service_1.AboutServices.getAllEducations();
+    const result = yield about_service_1.AboutServices.getAllEducations(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
-        message: "Education retrieved successfully.",
-        data: education,
+        message: "Educations retrieved successfully.",
+        meta: result.meta,
+        data: result.data,
+    });
+}));
+const updateEducation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield about_service_1.AboutServices.updateEducation(id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Education updated successfully.",
+        data: result,
     });
 }));
 const deleteEducation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -130,12 +166,15 @@ exports.AboutController = {
     getAbout,
     createSkill,
     getAllSkills,
+    updateSkill,
     deleteSkill,
     createExperience,
     getAllExperiences,
+    updateExperience,
     deleteExperience,
     createEducation,
     getAllEducations,
+    updateEducation,
     deleteEducation,
 };
 //# sourceMappingURL=about.controller.js.map

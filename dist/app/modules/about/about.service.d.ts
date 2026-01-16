@@ -5,6 +5,7 @@ export declare const AboutServices: {
             name: string;
             id: string;
             photo: string | null;
+            category: string | null;
             aboutId: string | null;
         }[];
         experiences: {
@@ -42,6 +43,7 @@ export declare const AboutServices: {
             name: string;
             id: string;
             photo: string | null;
+            category: string | null;
             aboutId: string | null;
         }[];
         experiences: {
@@ -78,14 +80,31 @@ export declare const AboutServices: {
         name: string;
         id: string;
         photo: string | null;
+        category: string | null;
         aboutId: string | null;
     }>;
-    getAllSkills: () => Promise<{
+    getAllSkills: (query: Record<string, any>) => Promise<{
+        meta: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPage: number;
+        };
+        data: {
+            name: string;
+            id: string;
+            photo: string | null;
+            category: string | null;
+            aboutId: string | null;
+        }[];
+    }>;
+    updateSkill: (id: string, payload: Partial<Prisma.SkillUpdateInput>) => Promise<{
         name: string;
         id: string;
         photo: string | null;
+        category: string | null;
         aboutId: string | null;
-    }[]>;
+    }>;
     deleteSkill: (skillId: string) => Promise<{
         message: string;
     }>;
@@ -98,7 +117,24 @@ export declare const AboutServices: {
         startYear: string;
         endYear: string | null;
     }>;
-    getAllExperiences: () => Promise<{
+    getAllExperiences: (query: Record<string, any>) => Promise<{
+        meta: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPage: number;
+        };
+        data: {
+            id: string;
+            description: string | null;
+            aboutId: string;
+            jobTitle: string;
+            company: string;
+            startYear: string;
+            endYear: string | null;
+        }[];
+    }>;
+    updateExperience: (id: string, payload: Partial<Prisma.ExperienceUpdateInput>) => Promise<{
         id: string;
         description: string | null;
         aboutId: string;
@@ -106,7 +142,7 @@ export declare const AboutServices: {
         company: string;
         startYear: string;
         endYear: string | null;
-    }[]>;
+    }>;
     deleteExperience: (experienceId: string) => Promise<{
         message: string;
     }>;
@@ -119,7 +155,24 @@ export declare const AboutServices: {
         degree: string;
         institution: string;
     }>;
-    getAllEducations: () => Promise<{
+    getAllEducations: (query: Record<string, any>) => Promise<{
+        meta: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPage: number;
+        };
+        data: {
+            id: string;
+            description: string | null;
+            aboutId: string;
+            startYear: string;
+            endYear: string | null;
+            degree: string;
+            institution: string;
+        }[];
+    }>;
+    updateEducation: (id: string, payload: Partial<Prisma.EducationUpdateInput>) => Promise<{
         id: string;
         description: string | null;
         aboutId: string;
@@ -127,7 +180,7 @@ export declare const AboutServices: {
         endYear: string | null;
         degree: string;
         institution: string;
-    }[]>;
+    }>;
     deleteEducation: (educationId: string) => Promise<{
         message: string;
     }>;

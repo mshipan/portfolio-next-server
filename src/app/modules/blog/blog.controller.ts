@@ -23,13 +23,14 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllBlogs = catchAsync(async (req: Request, res: Response) => {
-  const result = await BlogServices.getAllBlogs();
+  const result = await BlogServices.getAllBlogs(req.query);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "All blogs retrieved successfully.",
-    data: result,
+    data: result.data,
+    meta: result.meta
   });
 });
 

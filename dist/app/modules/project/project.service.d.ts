@@ -14,20 +14,28 @@ export declare const ProjectServices: {
         liveUrl: string | null;
         thumbnail: string | null;
     }>;
-    getAllProjects: () => Promise<{
-        id: string;
-        createdAt: Date;
-        title: string;
-        slug: string;
-        updatedAt: Date;
-        description: string;
-        techStack: string[];
-        features: string[];
-        featured: boolean;
-        repoUrl: string | null;
-        liveUrl: string | null;
-        thumbnail: string | null;
-    }[]>;
+    getAllProjects: (query: Record<string, any>) => Promise<{
+        meta: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPage: number;
+        };
+        data: {
+            id: string;
+            createdAt: Date;
+            title: string;
+            slug: string;
+            updatedAt: Date;
+            description: string;
+            techStack: string[];
+            features: string[];
+            featured: boolean;
+            repoUrl: string | null;
+            liveUrl: string | null;
+            thumbnail: string | null;
+        }[];
+    }>;
     getSingleProject: (slug: string) => Promise<{
         id: string;
         createdAt: Date;

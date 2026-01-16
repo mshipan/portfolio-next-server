@@ -15,6 +15,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectServices = void 0;
+const client_1 = require("@prisma/client");
 const slugify_1 = __importDefault(require("slugify"));
 const db_1 = require("../../config/db");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
@@ -32,11 +33,41 @@ const createProject = (payload) => __awaiter(void 0, void 0, void 0, function* (
     });
     return newProject;
 });
-const getAllProjects = () => __awaiter(void 0, void 0, void 0, function* () {
-    const projects = yield db_1.prisma.project.findMany({
-        orderBy: { createdAt: "desc" },
+const getAllProjects = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, sortBy, sortOrder, limit, page, featured } = query;
+    const searchConditions = search ? {
+        OR: [
+            { title: { contains: search, mode: client_1.Prisma.QueryMode.insensitive } },
+            { description: { contains: search, mode: client_1.Prisma.QueryMode.insensitive } },
+            { techStack: { hasSome: [search] } }
+        ],
+    } : {};
+    const filterConditions = Object.assign({}, searchConditions);
+    if (featured !== undefined) {
+        filterConditions.featured = featured === "true";
+    }
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    const sort = sortBy || "createdAt";
+    const order = sortOrder || "desc";
+    const result = yield db_1.prisma.project.findMany({
+        where: filterConditions,
+        skip,
+        take: limitNum,
+        orderBy: { [sort]: order },
     });
-    return projects;
+    const total = yield db_1.prisma.project.count({ where: filterConditions });
+    const totalPage = Math.ceil(total / limitNum);
+    return {
+        meta: {
+            page: pageNum,
+            limit: limitNum,
+            total,
+            totalPage
+        },
+        data: result,
+    };
 });
 const getSingleProject = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const isProjectExist = yield db_1.prisma.project.findUnique({ where: { slug } });

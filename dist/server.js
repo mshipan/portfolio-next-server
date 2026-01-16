@@ -12,75 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-const http_1 = __importDefault(require("http"));
 const app_1 = __importDefault(require("./app"));
 const db_1 = require("./app/config/db");
 const seedOwner_1 = require("./app/utils/seedOwner");
-let server = null;
-function connectToDB() {
+const PORT = process.env.PORT || 5000;
+function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield db_1.prisma.$connect();
             console.log("DB connected successfully.");
+            yield (0, seedOwner_1.seedOwner)();
+            if (process.env.NODE_ENV !== "production") {
+                app_1.default.listen(PORT, () => {
+                    console.log(`Server is running on port ${PORT}`);
+                });
+            }
         }
         catch (error) {
-            console.log("Failed to connect DB!");
-            process.exit(1);
+            console.error("Initialization error:", error);
         }
     });
 }
-function startServer() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield connectToDB();
-            server = http_1.default.createServer(app_1.default);
-            server.listen(process.env.PORT, () => {
-                console.log(`Server is running on port ${process.env.PORT}`);
-            });
-            handleProcessEvents();
-        }
-        catch (error) {
-            console.error("Error during server startup:", error);
-            process.exit(1);
-        }
-    });
-}
-function gracefulShutdown(signal) {
-    return __awaiter(this, void 0, void 0, function* () {
-        console.warn(`Received ${signal}, shutting down gracefully...`);
-        if (server) {
-            server.close(() => __awaiter(this, void 0, void 0, function* () {
-                console.log("HTTP Server closed.");
-                try {
-                    console.log("Server shutdown complete.");
-                }
-                catch (error) {
-                    console.error("Error during shutdown:", error);
-                }
-                process.exit(0);
-            }));
-        }
-        else {
-            process.exit(0);
-        }
-    });
-}
-function handleProcessEvents() {
-    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
-    process.on("uncaughtException", (error) => {
-        console.error("Uncaught Exception:", error);
-        gracefulShutdown("uncaughtException");
-    });
-    process.on("unhandledRejection", (reason) => {
-        console.error("Unhandled Rejection:", reason);
-        gracefulShutdown("unhandledRejection");
-    });
-}
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield startServer();
-    yield (0, seedOwner_1.seedOwner)();
-}))();
+bootstrap();
+exports.default = app_1.default;
 //# sourceMappingURL=server.js.map

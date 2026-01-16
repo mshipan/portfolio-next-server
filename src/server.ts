@@ -1,73 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-import http, { Server } from "http";
 import app from "./app";
 import { prisma } from "./app/config/db";
 import { seedOwner } from "./app/utils/seedOwner";
 
-let server: Server | null = null;
+const PORT = process.env.PORT || 5000;
 
-async function connectToDB() {
+async function bootstrap() {
   try {
     await prisma.$connect();
     console.log("DB connected successfully.");
+    
+    await seedOwner();
+
+    if (process.env.NODE_ENV !== "production") {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    }
   } catch (error) {
-    console.log("Failed to connect DB!");
-    process.exit(1);
+    console.error("Initialization error:", error);
   }
 }
 
-async function startServer() {
-  try {
-    await connectToDB();
-    server = http.createServer(app);
-    server.listen(process.env.PORT, () => {
-      console.log(`Server is running on port ${process.env.PORT}`);
-    });
+bootstrap();
 
-    handleProcessEvents();
-  } catch (error) {
-    console.error("Error during server startup:", error);
-    process.exit(1);
-  }
-}
-
-async function gracefulShutdown(signal: string) {
-  console.warn(`Received ${signal}, shutting down gracefully...`);
-
-  if (server) {
-    server.close(async () => {
-      console.log("HTTP Server closed.");
-
-      try {
-        console.log("Server shutdown complete.");
-      } catch (error) {
-        console.error("Error during shutdown:", error);
-      }
-
-      process.exit(0);
-    });
-  } else {
-    process.exit(0);
-  }
-}
-
-function handleProcessEvents() {
-  process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-  process.on("SIGINT", () => gracefulShutdown("SIGINT"));
-
-  process.on("uncaughtException", (error) => {
-    console.error("Uncaught Exception:", error);
-    gracefulShutdown("uncaughtException");
-  });
-
-  process.on("unhandledRejection", (reason) => {
-    console.error("Unhandled Rejection:", reason);
-    gracefulShutdown("unhandledRejection");
-  });
-}
-
-(async () => {
-  await startServer();
-  await seedOwner();
-})();
+export default app;

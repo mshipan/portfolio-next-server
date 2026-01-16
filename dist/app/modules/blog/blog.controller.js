@@ -30,12 +30,13 @@ const createBlog = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     });
 }));
 const getAllBlogs = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_service_1.BlogServices.getAllBlogs();
+    const result = yield blog_service_1.BlogServices.getAllBlogs(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "All blogs retrieved successfully.",
-        data: result,
+        data: result.data,
+        meta: result.meta
     });
 }));
 const getSingleBlog = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -54,8 +54,25 @@ const getNewAccessToken = (refreshToken) => __awaiter(void 0, void 0, void 0, fu
         accessToken: newAccessToken,
     };
 });
+const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield db_1.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            createdAt: true,
+        },
+    });
+    if (!user) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found.");
+    }
+    return user;
+});
 exports.AuthServices = {
     credentialsLogin,
     getNewAccessToken,
+    getMe,
 };
 //# sourceMappingURL=auth.service.js.map

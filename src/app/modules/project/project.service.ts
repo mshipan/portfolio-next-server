@@ -29,12 +29,49 @@ const createProject = async (payload: Prisma.ProjectCreateInput) => {
   return newProject;
 };
 
-const getAllProjects = async () => {
-  const projects = await prisma.project.findMany({
-    orderBy: { createdAt: "desc" },
+const getAllProjects = async (query:Record<string, any>) => {
+  const {search,sortBy,sortOrder,limit,page,featured} = query;
+
+  const searchConditions = search ?{
+    OR:[
+      {title:{contains: search as string, mode:Prisma.QueryMode.insensitive}},
+      {description:{contains:search as string, mode:Prisma.QueryMode.insensitive}},
+      {techStack: {hasSome:[search as string]}}
+    ],
+  }:{};
+
+  const filterConditions:any = {...searchConditions};
+  if(featured !== undefined){
+    filterConditions.featured = featured === "true";
+  }
+
+  const pageNum = Number(page) || 1;
+  const limitNum = Number(limit) || 10;
+  const skip= (pageNum - 1) * limitNum;
+
+  const sort = (sortBy as string) || "createdAt";
+  const order = (sortOrder as string) || "desc";
+
+
+  const result = await prisma.project.findMany({
+    where: filterConditions,
+    skip,
+    take:limitNum,
+    orderBy: { [sort]: order },
   });
 
-  return projects;
+  const total = await prisma.project.count({where:filterConditions});
+  const totalPage = Math.ceil(total/limitNum);
+
+  return {
+    meta:{
+      page: pageNum,
+      limit: limitNum,
+      total,
+      totalPage
+    },
+    data: result,
+  };
 };
 
 const getSingleProject = async (slug: string) => {

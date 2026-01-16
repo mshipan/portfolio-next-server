@@ -14,5 +14,12 @@ export declare const AuthServices: {
     getNewAccessToken: (refreshToken: string) => Promise<{
         accessToken: string;
     }>;
+    getMe: (userId: string) => Promise<{
+        name: string | null;
+        id: string;
+        email: string;
+        role: string;
+        createdAt: Date;
+    }>;
 };
 //# sourceMappingURL=auth.service.d.ts.map

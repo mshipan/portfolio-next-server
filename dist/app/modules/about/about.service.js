@@ -67,26 +67,73 @@ const getAbout = () => __awaiter(void 0, void 0, void 0, function* () {
     return about;
 });
 const createSkill = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     const about = yield db_1.prisma.about.findFirst();
     if (!about) {
         throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "About section not found.");
     }
+    const isExist = yield db_1.prisma.skill.findFirst({
+        where: {
+            name: { equals: payload.name, mode: "insensitive" },
+            category: (_a = payload.category) !== null && _a !== void 0 ? _a : null,
+            aboutId: about.id
+        }
+    });
+    if (isExist) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "This skill already exists in this category.");
+    }
     const skill = yield db_1.prisma.skill.create({
         data: {
             name: payload.name,
-            photo: (_a = payload.photo) !== null && _a !== void 0 ? _a : null,
+            category: (_b = payload.category) !== null && _b !== void 0 ? _b : null,
+            photo: (_c = payload.photo) !== null && _c !== void 0 ? _c : null,
             aboutId: about.id,
         },
     });
     return skill;
 });
-const getAllSkills = () => __awaiter(void 0, void 0, void 0, function* () {
-    const skills = db_1.prisma.skill.findMany();
-    if (!skills) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Skills not found.");
+const getAllSkills = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, category, page, limit } = query;
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    const filterConditions = {};
+    if (search) {
+        filterConditions.name = { contains: search, mode: 'insensitive' };
     }
-    return skills;
+    if (category) {
+        filterConditions.category = category;
+    }
+    const result = yield db_1.prisma.skill.findMany({
+        where: filterConditions,
+        skip,
+        take: limitNum,
+        orderBy: { name: 'asc' },
+    });
+    const total = yield db_1.prisma.skill.count({ where: filterConditions });
+    return {
+        meta: {
+            page: pageNum,
+            limit: limitNum,
+            total,
+            totalPage: Math.ceil(total / limitNum),
+        },
+        data: result,
+    };
+});
+const updateSkill = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExist = yield db_1.prisma.skill.findUnique({ where: { id } });
+    if (!isExist) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Skill not found.");
+    }
+    const updatedSkill = yield db_1.prisma.skill.update({
+        where: { id },
+        data: payload,
+    });
+    if (payload.photo && isExist.photo) {
+        yield (0, cloudinary_config_1.deleteImageFromCloudinary)(isExist.photo);
+    }
+    return updatedSkill;
 });
 const deleteSkill = (skillId) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield db_1.prisma.skill.findUnique({ where: { id: skillId } });
@@ -114,12 +161,40 @@ const createExperience = (payload) => __awaiter(void 0, void 0, void 0, function
     });
     return experience;
 });
-const getAllExperiences = () => __awaiter(void 0, void 0, void 0, function* () {
-    const experiences = db_1.prisma.experience.findMany();
-    if (!experiences) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Experiences not found.");
-    }
-    return experiences;
+const getAllExperiences = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, page, limit } = query;
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const filter = search
+        ? {
+            OR: [
+                { company: { contains: search, mode: 'insensitive' } },
+                { jobTitle: { contains: search, mode: 'insensitive' } },
+            ],
+        }
+        : {};
+    const [data, total] = yield Promise.all([
+        db_1.prisma.experience.findMany({
+            where: filter,
+            skip: (pageNum - 1) * limitNum,
+            take: limitNum,
+            orderBy: { startYear: 'desc' },
+        }),
+        db_1.prisma.experience.count({ where: filter }),
+    ]);
+    return {
+        meta: { page: pageNum, limit: limitNum, total, totalPage: Math.ceil(total / limitNum) },
+        data,
+    };
+});
+const updateExperience = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExist = yield db_1.prisma.experience.findUnique({ where: { id } });
+    if (!isExist)
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Experience not found.");
+    return yield db_1.prisma.experience.update({
+        where: { id },
+        data: payload,
+    });
 });
 const deleteExperience = (experienceId) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield db_1.prisma.experience.findUnique({
@@ -149,12 +224,40 @@ const createEducation = (payload) => __awaiter(void 0, void 0, void 0, function*
     });
     return education;
 });
-const getAllEducations = () => __awaiter(void 0, void 0, void 0, function* () {
-    const educations = db_1.prisma.education.findMany();
-    if (!educations) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Educations not found.");
-    }
-    return educations;
+const getAllEducations = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, page, limit } = query;
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const filter = search
+        ? {
+            OR: [
+                { institution: { contains: search, mode: 'insensitive' } },
+                { degree: { contains: search, mode: 'insensitive' } },
+            ],
+        }
+        : {};
+    const [data, total] = yield Promise.all([
+        db_1.prisma.education.findMany({
+            where: filter,
+            skip: (pageNum - 1) * limitNum,
+            take: limitNum,
+            orderBy: { startYear: 'desc' },
+        }),
+        db_1.prisma.education.count({ where: filter }),
+    ]);
+    return {
+        meta: { page: pageNum, limit: limitNum, total, totalPage: Math.ceil(total / limitNum) },
+        data,
+    };
+});
+const updateEducation = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExist = yield db_1.prisma.education.findUnique({ where: { id } });
+    if (!isExist)
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Education not found.");
+    return yield db_1.prisma.education.update({
+        where: { id },
+        data: payload,
+    });
 });
 const deleteEducation = (educationId) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield db_1.prisma.education.findUnique({
@@ -171,12 +274,15 @@ exports.AboutServices = {
     getAbout,
     createSkill,
     getAllSkills,
+    updateSkill,
     deleteSkill,
     createExperience,
     getAllExperiences,
+    updateExperience,
     deleteExperience,
     createEducation,
     getAllEducations,
+    updateEducation,
     deleteEducation,
 };
 //# sourceMappingURL=about.service.js.map

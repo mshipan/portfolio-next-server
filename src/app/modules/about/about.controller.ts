@@ -52,14 +52,34 @@ const createSkill = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllSkills = catchAsync(async (req: Request, res: Response) => {
-  const skills = await AboutServices.getAllSkills();
+  const skills = await AboutServices.getAllSkills(req.query);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Skills retrieved successfully.",
-    data: skills,
+    data: skills.data,
+    meta: skills.meta,
   });
+});
+
+const updateSkill = catchAsync(async(req:Request,res:Response) => {
+  const {id}= req.params;
+  req.body = JSON.parse(req.body.data) || req.body;
+
+  const payload = {
+    ...req.body,
+    photo:req.file?.path,
+  };
+
+  const result = await AboutServices.updateSkill(id as string, payload);
+
+  sendResponse(res,{
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Skill updated successfully.",
+    data: result,
+  })
 });
 
 const deleteSkill = catchAsync(async (req: Request, res: Response) => {
@@ -87,13 +107,24 @@ const createExperience = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllExperiences = catchAsync(async (req: Request, res: Response) => {
-  const experience = await AboutServices.getAllExperiences();
-
+  const result = await AboutServices.getAllExperiences(req.query);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Experiences retrieved successfully.",
-    data: experience,
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
+const updateExperience = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await AboutServices.updateExperience(id as string, req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Experience updated successfully.",
+    data: result,
   });
 });
 
@@ -122,13 +153,24 @@ const createEducation = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllEducations = catchAsync(async (req: Request, res: Response) => {
-  const education = await AboutServices.getAllEducations();
-
+  const result = await AboutServices.getAllEducations(req.query);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Education retrieved successfully.",
-    data: education,
+    message: "Educations retrieved successfully.",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
+const updateEducation = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await AboutServices.updateEducation(id as string, req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Education updated successfully.",
+    data: result,
   });
 });
 
@@ -150,11 +192,14 @@ export const AboutController = {
   getAbout,
   createSkill,
   getAllSkills,
+  updateSkill,
   deleteSkill,
   createExperience,
   getAllExperiences,
+  updateExperience,
   deleteExperience,
   createEducation,
   getAllEducations,
+  updateEducation,
   deleteEducation,
 };

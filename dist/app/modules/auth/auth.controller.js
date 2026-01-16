@@ -20,6 +20,7 @@ const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const userToken_1 = require("../../utils/userToken");
 const setCookie_1 = require("../../utils/setCookie");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const credentialsLogin = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.credentialsLogin(req.body);
     const userTokens = (0, userToken_1.createUserToken)(result.user);
@@ -67,9 +68,24 @@ const logout = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void
         data: null,
     });
 }));
+const getMe = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+        throw new AppError_1.default(http_status_codes_1.default.UNAUTHORIZED, "Access token not found.");
+    }
+    const decoded = jsonwebtoken_1.default.verify(accessToken, process.env.JWT_ACCESS_SECRET);
+    const user = yield auth_service_1.AuthServices.getMe(decoded.userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "User retrieved successfully.",
+        data: user,
+    });
+}));
 exports.AuthController = {
     credentialsLogin,
     getNewAccessToken,
     logout,
+    getMe,
 };
 //# sourceMappingURL=auth.controller.js.map

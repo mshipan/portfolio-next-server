@@ -7,5 +7,6 @@ const router = (0, express_1.Router)();
 router.post("/login", auth_controller_1.AuthController.credentialsLogin);
 router.post("/refresh-token", auth_controller_1.AuthController.getNewAccessToken);
 router.post("/logout", auth_controller_1.AuthController.logout);
+router.get("/me", auth_controller_1.AuthController.getMe);
 exports.AuthRoutes = router;
 //# sourceMappingURL=auth.route.js.map

@@ -15,6 +15,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogServices = void 0;
+const client_1 = require("@prisma/client");
 const db_1 = require("../../config/db");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
@@ -32,11 +33,39 @@ const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return newBlog;
 });
-const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield db_1.prisma.blog.findMany({
-        orderBy: { createdAt: "desc" },
+const getAllBlogs = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, sortBy, sortOrder, limit, page, published } = query;
+    const searchConditions = search ? { OR: [
+            { title: { contains: search, mode: client_1.Prisma.QueryMode.insensitive } },
+            { content: { contain: search, mode: client_1.Prisma.QueryMode.insensitive } }
+        ] } : {};
+    const filterConditions = Object.assign({}, searchConditions);
+    if (published !== undefined) {
+        filterConditions.published = published === "true";
+    }
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+    const sort = sortBy || "createdAt";
+    const order = sortOrder || "desc";
+    const result = yield db_1.prisma.blog.findMany({
+        where: filterConditions,
+        skip,
+        take: limitNum,
+        orderBy: { [sort]: order },
+        include: { author: true }
     });
-    return blogs;
+    const total = yield db_1.prisma.blog.count({ where: filterConditions });
+    const totalPage = Math.ceil(total / limitNum);
+    return {
+        meta: {
+            page: pageNum,
+            limit: limit,
+            total,
+            totalPage
+        },
+        data: result,
+    };
 });
 const getSingleBlog = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield db_1.prisma.blog.findUnique({

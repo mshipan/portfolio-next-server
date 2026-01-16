@@ -30,12 +30,13 @@ const createProject = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
     });
 }));
 const getAllProjects = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield project_service_1.ProjectServices.getAllProjects();
+    const result = yield project_service_1.ProjectServices.getAllProjects(req.query);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "All projects retrieved successfully.",
-        data: result,
+        data: result.data,
+        meta: result.meta
     });
 }));
 const getSingleProject = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
