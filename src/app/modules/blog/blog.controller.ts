@@ -8,9 +8,10 @@ import { Prisma } from "@prisma/client";
 const createBlog = catchAsync(async (req: Request, res: Response) => {
   req.body = JSON.parse(req.body.data) || req.body;
 
-  const payload: Prisma.BlogCreateInput = {
+ const payload = {
     ...req.body,
     coverUrl: req.file?.path,
+    authorId: req.user?.userId,
   };
   const result = await BlogServices.createBlog(payload);
 

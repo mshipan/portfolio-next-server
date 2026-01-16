@@ -1,10 +1,11 @@
 import { Prisma } from "@prisma/client";
 export declare const BlogServices: {
-    createBlog: (payload: Prisma.BlogCreateInput) => Promise<{
+    createBlog: (payload: any) => Promise<{
         id: string;
         createdAt: Date;
         title: string;
         slug: string;
+        category: string | null;
         summary: string | null;
         content: string;
         published: boolean;
@@ -33,6 +34,7 @@ export declare const BlogServices: {
             createdAt: Date;
             title: string;
             slug: string;
+            category: string | null;
             summary: string | null;
             content: string;
             published: boolean;
@@ -46,6 +48,7 @@ export declare const BlogServices: {
         createdAt: Date;
         title: string;
         slug: string;
+        category: string | null;
         summary: string | null;
         content: string;
         published: boolean;
@@ -58,6 +61,7 @@ export declare const BlogServices: {
         createdAt: Date;
         title: string;
         slug: string;
+        category: string | null;
         summary: string | null;
         content: string;
         published: boolean;

@@ -4,8 +4,8 @@ export declare const AboutServices: {
         skills: {
             name: string;
             id: string;
-            photo: string | null;
             category: string | null;
+            photo: string | null;
             aboutId: string | null;
         }[];
         experiences: {
@@ -42,8 +42,8 @@ export declare const AboutServices: {
         skills: {
             name: string;
             id: string;
-            photo: string | null;
             category: string | null;
+            photo: string | null;
             aboutId: string | null;
         }[];
         experiences: {
@@ -79,8 +79,8 @@ export declare const AboutServices: {
     createSkill: (payload: Prisma.SkillCreateInput) => Promise<{
         name: string;
         id: string;
-        photo: string | null;
         category: string | null;
+        photo: string | null;
         aboutId: string | null;
     }>;
     getAllSkills: (query: Record<string, any>) => Promise<{
@@ -93,16 +93,16 @@ export declare const AboutServices: {
         data: {
             name: string;
             id: string;
-            photo: string | null;
             category: string | null;
+            photo: string | null;
             aboutId: string | null;
         }[];
     }>;
     updateSkill: (id: string, payload: Partial<Prisma.SkillUpdateInput>) => Promise<{
         name: string;
         id: string;
-        photo: string | null;
         category: string | null;
+        photo: string | null;
         aboutId: string | null;
     }>;
     deleteSkill: (skillId: string) => Promise<{

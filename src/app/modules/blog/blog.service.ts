@@ -8,22 +8,30 @@ import httpStatus from "http-status-codes";
 import slugify from "slugify";
 import { deleteImageFromCloudinary } from "../../config/cloudinary.config";
 
-const createBlog = async (payload: Prisma.BlogCreateInput) => {
-  const { title } = payload;
+const createBlog = async (payload: any) => {
+  const { title, authorId, ...otherData } = payload;
 
   const slug = slugify(title, { lower: true, strict: true });
 
   const isSlugExist = await prisma.blog.findUnique({ where: { slug } });
-
   if (isSlugExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Blog with this title is already exist."
+      "Blog with this title already exists."
     );
   }
 
   const newBlog = await prisma.blog.create({
-    data: { ...payload, slug },
+    data: {
+      ...otherData,
+      title,
+      slug,
+      author: {
+        connect: {
+          id: authorId,
+        },
+      },
+    },
   });
 
   return newBlog;
@@ -34,7 +42,7 @@ const getAllBlogs = async (query:Record<string, any>) => {
 
   const searchConditions = search?{OR:[
     {title:{contains:search as string, mode: Prisma.QueryMode.insensitive}},
-    {content: {contain: search as string, mode: Prisma.QueryMode.insensitive}}
+    { content: { contains: search as string, mode: Prisma.QueryMode.insensitive } }
   ]}: {};
 
   const filterConditions:any = {...searchConditions};

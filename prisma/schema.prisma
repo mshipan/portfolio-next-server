@@ -25,6 +25,7 @@ model Blog {
   author User @relation(fields: [authorId], references: [id])
   title String
   slug String @unique
+  category   String?
   summary String?
   content String
   published Boolean @default(false)

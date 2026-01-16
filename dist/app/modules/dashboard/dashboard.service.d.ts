@@ -37,6 +37,7 @@ export declare const DashboardServices: {
             createdAt: Date;
             title: string;
             slug: string;
+            category: string | null;
             summary: string | null;
             content: string;
             published: boolean;

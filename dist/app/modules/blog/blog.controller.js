@@ -18,9 +18,9 @@ const blog_service_1 = require("./blog.service");
 const sendResponse_1 = require("../../utils/sendResponse");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const createBlog = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     req.body = JSON.parse(req.body.data) || req.body;
-    const payload = Object.assign(Object.assign({}, req.body), { coverUrl: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
+    const payload = Object.assign(Object.assign({}, req.body), { coverUrl: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path, authorId: (_b = req.user) === null || _b === void 0 ? void 0 : _b.userId });
     const result = yield blog_service_1.BlogServices.createBlog(payload);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
