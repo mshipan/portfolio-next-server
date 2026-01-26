@@ -13,7 +13,7 @@ import { router } from "./app/routes";
 const app = express();
 
 const corsConfig = {
-  origin: ["http://localhost:3000"],
+  origin: ["http://localhost:3000", "http://192.168.0.111:3000"],
   credentials: true,
   optionSuccessStatus: 200,
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],

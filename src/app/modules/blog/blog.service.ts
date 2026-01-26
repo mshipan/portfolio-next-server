@@ -38,7 +38,7 @@ const createBlog = async (payload: any) => {
 };
 
 const getAllBlogs = async (query:Record<string, any>) => {
-  const {search,sortBy,sortOrder,limit,page,published} = query;
+  const {search, sortBy, sortOrder, limit, page, published} = query;
 
   const searchConditions = search?{OR:[
     {title:{contains:search as string, mode: Prisma.QueryMode.insensitive}},
@@ -51,7 +51,7 @@ const getAllBlogs = async (query:Record<string, any>) => {
   }
 
   const pageNum = Number(page) || 1;
-  const limitNum = Number(limit) || 10;
+  const limitNum = Math.min(Number(limit) || 10, 100);
   const skip= (pageNum - 1)* limitNum;
 
   const sort = (sortBy as string)|| "createdAt";
@@ -62,7 +62,15 @@ const getAllBlogs = async (query:Record<string, any>) => {
     skip,
     take: limitNum,
     orderBy: { [sort]: order },
-    include: {author:true}
+    include: {author:{
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    },}
   });
 
   const total = await prisma.blog.count({where:filterConditions});
@@ -71,7 +79,7 @@ const getAllBlogs = async (query:Record<string, any>) => {
   return {
     meta: {
       page:pageNum,
-      limit:limit,
+      limit:limitNum,
       total,
       totalPage
     },
@@ -82,6 +90,15 @@ const getAllBlogs = async (query:Record<string, any>) => {
 const getSingleBlog = async (slug: string) => {
   const blog = await prisma.blog.findUnique({
     where: { slug },
+    include: {author:{
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    },}
   });
 
   if (!blog) {
