@@ -39,12 +39,14 @@ model Project {
   title String
   slug String @unique
   description String
+  shortDescription String
   techStack String[]
   features String[]
   featured Boolean @default(false)
   repoUrl String?
   liveUrl String?
   thumbnail String?
+  published Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

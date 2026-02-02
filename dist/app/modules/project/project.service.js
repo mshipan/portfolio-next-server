@@ -34,7 +34,7 @@ const createProject = (payload) => __awaiter(void 0, void 0, void 0, function* (
     return newProject;
 });
 const getAllProjects = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { search, sortBy, sortOrder, limit, page, featured } = query;
+    const { search, sortBy, sortOrder, limit, page, featured, published } = query;
     const searchConditions = search ? {
         OR: [
             { title: { contains: search, mode: client_1.Prisma.QueryMode.insensitive } },
@@ -45,6 +45,9 @@ const getAllProjects = (query) => __awaiter(void 0, void 0, void 0, function* ()
     const filterConditions = Object.assign({}, searchConditions);
     if (featured !== undefined) {
         filterConditions.featured = featured === "true";
+    }
+    if (published !== undefined) {
+        filterConditions.published = published === "true";
     }
     const pageNum = Number(page) || 1;
     const limitNum = Number(limit) || 10;

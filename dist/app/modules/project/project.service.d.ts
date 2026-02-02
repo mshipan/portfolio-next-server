@@ -5,8 +5,10 @@ export declare const ProjectServices: {
         createdAt: Date;
         title: string;
         slug: string;
+        published: boolean;
         updatedAt: Date;
         description: string;
+        shortDescription: string;
         techStack: string[];
         features: string[];
         featured: boolean;
@@ -26,8 +28,10 @@ export declare const ProjectServices: {
             createdAt: Date;
             title: string;
             slug: string;
+            published: boolean;
             updatedAt: Date;
             description: string;
+            shortDescription: string;
             techStack: string[];
             features: string[];
             featured: boolean;
@@ -41,8 +45,10 @@ export declare const ProjectServices: {
         createdAt: Date;
         title: string;
         slug: string;
+        published: boolean;
         updatedAt: Date;
         description: string;
+        shortDescription: string;
         techStack: string[];
         features: string[];
         featured: boolean;
@@ -55,8 +61,10 @@ export declare const ProjectServices: {
         createdAt: Date;
         title: string;
         slug: string;
+        published: boolean;
         updatedAt: Date;
         description: string;
+        shortDescription: string;
         techStack: string[];
         features: string[];
         featured: boolean;

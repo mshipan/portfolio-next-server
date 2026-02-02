@@ -30,7 +30,7 @@ const createProject = async (payload: Prisma.ProjectCreateInput) => {
 };
 
 const getAllProjects = async (query:Record<string, any>) => {
-  const {search,sortBy,sortOrder,limit,page,featured} = query;
+  const {search,sortBy,sortOrder,limit,page,featured, published } = query;
 
   const searchConditions = search ?{
     OR:[
@@ -41,8 +41,13 @@ const getAllProjects = async (query:Record<string, any>) => {
   }:{};
 
   const filterConditions:any = {...searchConditions};
+
   if(featured !== undefined){
     filterConditions.featured = featured === "true";
+  }
+
+  if (published !== undefined) {
+    filterConditions.published = published === "true";
   }
 
   const pageNum = Number(page) || 1;

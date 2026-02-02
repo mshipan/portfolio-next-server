@@ -60,7 +60,7 @@ const getAllBlogs = (query) => __awaiter(void 0, void 0, void 0, function* () {
         filterConditions.published = published === "true";
     }
     const pageNum = Number(page) || 1;
-    const limitNum = Number(limit) || 10;
+    const limitNum = Math.min(Number(limit) || 10, 100);
     const skip = (pageNum - 1) * limitNum;
     const sort = sortBy || "createdAt";
     const order = sortOrder || "desc";
@@ -69,14 +69,22 @@ const getAllBlogs = (query) => __awaiter(void 0, void 0, void 0, function* () {
         skip,
         take: limitNum,
         orderBy: { [sort]: order },
-        include: { author: true }
+        include: { author: {
+                select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                    role: true,
+                    createdAt: true,
+                },
+            }, }
     });
     const total = yield db_1.prisma.blog.count({ where: filterConditions });
     const totalPage = Math.ceil(total / limitNum);
     return {
         meta: {
             page: pageNum,
-            limit: limit,
+            limit: limitNum,
             total,
             totalPage
         },
@@ -86,6 +94,15 @@ const getAllBlogs = (query) => __awaiter(void 0, void 0, void 0, function* () {
 const getSingleBlog = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield db_1.prisma.blog.findUnique({
         where: { slug },
+        include: { author: {
+                select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                    role: true,
+                    createdAt: true,
+                },
+            }, }
     });
     if (!blog) {
         throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Blog not found.");

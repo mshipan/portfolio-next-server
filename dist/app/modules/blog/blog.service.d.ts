@@ -16,7 +16,7 @@ export declare const BlogServices: {
     getAllBlogs: (query: Record<string, any>) => Promise<{
         meta: {
             page: number;
-            limit: any;
+            limit: number;
             total: number;
             totalPage: number;
         };
@@ -25,7 +25,6 @@ export declare const BlogServices: {
                 name: string | null;
                 id: string;
                 email: string;
-                password: string;
                 role: string;
                 createdAt: Date;
             };
@@ -44,6 +43,14 @@ export declare const BlogServices: {
         })[];
     }>;
     getSingleBlog: (slug: string) => Promise<{
+        author: {
+            name: string | null;
+            id: string;
+            email: string;
+            role: string;
+            createdAt: Date;
+        };
+    } & {
         id: string;
         createdAt: Date;
         title: string;
