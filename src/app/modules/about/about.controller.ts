@@ -33,6 +33,25 @@ const getAbout = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAboutPhoto = catchAsync(async (req: Request, res: Response) => {
+  const photo = req.file?.path;
+
+  if(!photo) {
+    return res.status(httpStatus.BAD_REQUEST).json({
+      success: false,
+      message: "Photo is required",
+    });
+  }
+
+  const result = await AboutServices.updateAboutPhoto(photo);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "Profile photo updated successfully",
+    data: result,
+  })
+})
+
 const createSkill = catchAsync(async (req: Request, res: Response) => {
   req.body = JSON.parse(req.body.data) || req.body;
 
@@ -190,6 +209,7 @@ const deleteEducation = catchAsync(async (req: Request, res: Response) => {
 export const AboutController = {
   createOrUpdateAbout,
   getAbout,
+  updateAboutPhoto,
   createSkill,
   getAllSkills,
   updateSkill,

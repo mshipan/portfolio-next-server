@@ -29,6 +29,8 @@ router.get("/skill", AboutController.getAllSkills);
 router.get("/experience", AboutController.getAllExperiences);
 router.get("/education", AboutController.getAllEducations);
 
+router.patch("/photo", checkAuth("owner"), multerUpload.single("file"), AboutController.updateAboutPhoto)
+
 router.patch("/skill/:id", checkAuth("owner"), multerUpload.single("file"), AboutController.updateSkill);
 
 router.patch("/experience/:id", checkAuth("owner"), AboutController.updateExperience);

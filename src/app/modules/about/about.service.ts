@@ -61,6 +61,25 @@ const getAbout = async () => {
   return about;
 };
 
+const updateAboutPhoto = async (photo:string) => {
+  const existingAbout = await prisma.about.findFirst();
+
+  if(!existingAbout) {
+    throw new AppError(httpStatus.NOT_FOUND, "About section not found");
+  }
+
+  if(existingAbout.photo) {
+    await deleteImageFromCloudinary(existingAbout.photo);
+  }
+
+  const updatedAbout = await prisma.about.update({
+    where: {id:existingAbout.id},
+    data: {photo},
+  });
+
+  return updatedAbout;
+}
+
 const createSkill = async (payload: Prisma.SkillCreateInput) => {
   const about = await prisma.about.findFirst();
 
@@ -312,6 +331,7 @@ const deleteEducation = async (educationId: string) => {
 export const AboutServices = {
   createOrUpdateAbout,
   getAbout,
+  updateAboutPhoto,
   createSkill,
   getAllSkills,
   updateSkill,
