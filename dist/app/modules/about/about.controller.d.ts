@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 export declare const AboutController: {
     createOrUpdateAbout: (req: Request, res: Response, next: import("express").NextFunction) => void;
     getAbout: (req: Request, res: Response, next: import("express").NextFunction) => void;
+    updateAboutPhoto: (req: Request, res: Response, next: import("express").NextFunction) => void;
     createSkill: (req: Request, res: Response, next: import("express").NextFunction) => void;
     getAllSkills: (req: Request, res: Response, next: import("express").NextFunction) => void;
     updateSkill: (req: Request, res: Response, next: import("express").NextFunction) => void;

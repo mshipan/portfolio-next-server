@@ -23,6 +23,8 @@ const createOrUpdateAbout = async (payload: Prisma.AboutCreateInput) => {
       email: payload.email,
       phone: payload.phone ?? null,
       address: payload.address ?? null,
+      github: payload.github ?? null,
+      linkedIn: payload.linkedIn ?? null,
       photo: payload.photo ?? null,
     },
     create: {
@@ -33,6 +35,8 @@ const createOrUpdateAbout = async (payload: Prisma.AboutCreateInput) => {
       email: payload.email,
       phone: payload.phone ?? null,
       address: payload.address ?? null,
+      github: payload.github ?? null,
+      linkedIn: payload.linkedIn ?? null,
       photo: payload.photo ?? null,
     },
     include: {
@@ -275,9 +279,11 @@ const createEducation = async (payload: Prisma.EducationCreateInput) => {
 };
 
 const getAllEducations = async (query: Record<string, any>) => {
-  const { search, page, limit } = query;
+  const { search, page, limit, sortOrder } = query;
   const pageNum = Number(page) || 1;
   const limitNum = Number(limit) || 10;
+
+  const order: "asc" | "desc" = sortOrder === "asc" ? "asc" : "desc";
 
   const filter: Prisma.EducationWhereInput = search
     ? {
@@ -293,7 +299,7 @@ const getAllEducations = async (query: Record<string, any>) => {
       where: filter,
       skip: (pageNum - 1) * limitNum,
       take: limitNum,
-      orderBy: { startYear: 'desc' },
+      orderBy: { startYear: order },
     }),
     prisma.education.count({ where: filter }),
   ]);

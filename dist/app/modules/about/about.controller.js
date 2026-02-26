@@ -38,6 +38,22 @@ const getAbout = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, vo
         data: about,
     });
 }));
+const updateAboutPhoto = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const photo = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
+    if (!photo) {
+        return res.status(http_status_codes_1.default.BAD_REQUEST).json({
+            success: false,
+            message: "Photo is required",
+        });
+    }
+    const result = yield about_service_1.AboutServices.updateAboutPhoto(photo);
+    res.status(http_status_codes_1.default.OK).json({
+        success: true,
+        message: "Profile photo updated successfully",
+        data: result,
+    });
+}));
 const createSkill = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     req.body = JSON.parse(req.body.data) || req.body;
@@ -164,6 +180,7 @@ const deleteEducation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(voi
 exports.AboutController = {
     createOrUpdateAbout,
     getAbout,
+    updateAboutPhoto,
     createSkill,
     getAllSkills,
     updateSkill,

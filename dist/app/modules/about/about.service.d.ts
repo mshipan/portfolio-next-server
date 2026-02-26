@@ -36,6 +36,8 @@ export declare const AboutServices: {
         bio: string;
         phone: string | null;
         address: string | null;
+        github: string | null;
+        linkedIn: string | null;
         photo: string | null;
     }>;
     getAbout: () => Promise<{
@@ -74,6 +76,22 @@ export declare const AboutServices: {
         bio: string;
         phone: string | null;
         address: string | null;
+        github: string | null;
+        linkedIn: string | null;
+        photo: string | null;
+    }>;
+    updateAboutPhoto: (photo: string) => Promise<{
+        name: string;
+        id: string;
+        email: string;
+        createdAt: Date;
+        title: string;
+        updatedAt: Date;
+        bio: string;
+        phone: string | null;
+        address: string | null;
+        github: string | null;
+        linkedIn: string | null;
         photo: string | null;
     }>;
     createSkill: (payload: Prisma.SkillCreateInput) => Promise<{

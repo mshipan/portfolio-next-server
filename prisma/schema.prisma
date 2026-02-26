@@ -59,6 +59,8 @@ model About {
   email String
   phone String?
   address String?
+  github String?
+  linkedIn String?
   photo String?
   skills Skill[]
   experiences Experience[]

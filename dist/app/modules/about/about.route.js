@@ -14,6 +14,7 @@ router.get("/", about_controller_1.AboutController.getAbout);
 router.get("/skill", about_controller_1.AboutController.getAllSkills);
 router.get("/experience", about_controller_1.AboutController.getAllExperiences);
 router.get("/education", about_controller_1.AboutController.getAllEducations);
+router.patch("/photo", (0, checkAuth_1.checkAuth)("owner"), multer_config_1.multerUpload.single("file"), about_controller_1.AboutController.updateAboutPhoto);
 router.patch("/skill/:id", (0, checkAuth_1.checkAuth)("owner"), multer_config_1.multerUpload.single("file"), about_controller_1.AboutController.updateSkill);
 router.patch("/experience/:id", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.updateExperience);
 router.patch("/education/:id", (0, checkAuth_1.checkAuth)("owner"), about_controller_1.AboutController.updateEducation);

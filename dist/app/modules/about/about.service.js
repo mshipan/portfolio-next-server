@@ -18,7 +18,7 @@ const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const cloudinary_config_1 = require("../../config/cloudinary.config");
 const createOrUpdateAbout = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const existingAbout = yield db_1.prisma.about.findFirst();
     const aboutId = (existingAbout === null || existingAbout === void 0 ? void 0 : existingAbout.id) || "about-singleton";
     if (existingAbout && payload.photo && existingAbout.photo) {
@@ -33,7 +33,9 @@ const createOrUpdateAbout = (payload) => __awaiter(void 0, void 0, void 0, funct
             email: payload.email,
             phone: (_a = payload.phone) !== null && _a !== void 0 ? _a : null,
             address: (_b = payload.address) !== null && _b !== void 0 ? _b : null,
-            photo: (_c = payload.photo) !== null && _c !== void 0 ? _c : null,
+            github: (_c = payload.github) !== null && _c !== void 0 ? _c : null,
+            linkedIn: (_d = payload.linkedIn) !== null && _d !== void 0 ? _d : null,
+            photo: (_e = payload.photo) !== null && _e !== void 0 ? _e : null,
         },
         create: {
             id: aboutId,
@@ -41,9 +43,11 @@ const createOrUpdateAbout = (payload) => __awaiter(void 0, void 0, void 0, funct
             title: payload.title,
             bio: payload.bio,
             email: payload.email,
-            phone: (_d = payload.phone) !== null && _d !== void 0 ? _d : null,
-            address: (_e = payload.address) !== null && _e !== void 0 ? _e : null,
-            photo: (_f = payload.photo) !== null && _f !== void 0 ? _f : null,
+            phone: (_f = payload.phone) !== null && _f !== void 0 ? _f : null,
+            address: (_g = payload.address) !== null && _g !== void 0 ? _g : null,
+            github: (_h = payload.github) !== null && _h !== void 0 ? _h : null,
+            linkedIn: (_j = payload.linkedIn) !== null && _j !== void 0 ? _j : null,
+            photo: (_k = payload.photo) !== null && _k !== void 0 ? _k : null,
         },
         include: {
             skills: true,
@@ -65,6 +69,20 @@ const getAbout = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "About section not found.");
     }
     return about;
+});
+const updateAboutPhoto = (photo) => __awaiter(void 0, void 0, void 0, function* () {
+    const existingAbout = yield db_1.prisma.about.findFirst();
+    if (!existingAbout) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "About section not found");
+    }
+    if (existingAbout.photo) {
+        yield (0, cloudinary_config_1.deleteImageFromCloudinary)(existingAbout.photo);
+    }
+    const updatedAbout = yield db_1.prisma.about.update({
+        where: { id: existingAbout.id },
+        data: { photo },
+    });
+    return updatedAbout;
 });
 const createSkill = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
@@ -225,9 +243,10 @@ const createEducation = (payload) => __awaiter(void 0, void 0, void 0, function*
     return education;
 });
 const getAllEducations = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { search, page, limit } = query;
+    const { search, page, limit, sortOrder } = query;
     const pageNum = Number(page) || 1;
     const limitNum = Number(limit) || 10;
+    const order = sortOrder === "asc" ? "asc" : "desc";
     const filter = search
         ? {
             OR: [
@@ -241,7 +260,7 @@ const getAllEducations = (query) => __awaiter(void 0, void 0, void 0, function* 
             where: filter,
             skip: (pageNum - 1) * limitNum,
             take: limitNum,
-            orderBy: { startYear: 'desc' },
+            orderBy: { startYear: order },
         }),
         db_1.prisma.education.count({ where: filter }),
     ]);
@@ -272,6 +291,7 @@ const deleteEducation = (educationId) => __awaiter(void 0, void 0, void 0, funct
 exports.AboutServices = {
     createOrUpdateAbout,
     getAbout,
+    updateAboutPhoto,
     createSkill,
     getAllSkills,
     updateSkill,
