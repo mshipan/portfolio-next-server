@@ -16,6 +16,7 @@ export declare const AboutServices: {
             company: string;
             startYear: string;
             endYear: string | null;
+            achievements: string[];
         }[];
         educations: {
             id: string;
@@ -56,6 +57,7 @@ export declare const AboutServices: {
             company: string;
             startYear: string;
             endYear: string | null;
+            achievements: string[];
         }[];
         educations: {
             id: string;
@@ -134,6 +136,7 @@ export declare const AboutServices: {
         company: string;
         startYear: string;
         endYear: string | null;
+        achievements: string[];
     }>;
     getAllExperiences: (query: Record<string, any>) => Promise<{
         meta: {
@@ -150,6 +153,7 @@ export declare const AboutServices: {
             company: string;
             startYear: string;
             endYear: string | null;
+            achievements: string[];
         }[];
     }>;
     updateExperience: (id: string, payload: Partial<Prisma.ExperienceUpdateInput>) => Promise<{
@@ -160,6 +164,7 @@ export declare const AboutServices: {
         company: string;
         startYear: string;
         endYear: string | null;
+        achievements: string[];
     }>;
     deleteExperience: (experienceId: string) => Promise<{
         message: string;

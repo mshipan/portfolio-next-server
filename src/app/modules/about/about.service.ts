@@ -196,6 +196,7 @@ const createExperience = async (payload: Prisma.ExperienceCreateInput) => {
       description: payload.description ?? null,
       startYear: payload.startYear,
       endYear: payload.endYear ?? "present",
+      achievements: payload.achievements ?? [],
       aboutId: about.id,
     },
   });

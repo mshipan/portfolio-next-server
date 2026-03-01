@@ -162,7 +162,7 @@ const deleteSkill = (skillId) => __awaiter(void 0, void 0, void 0, function* () 
     return { message: "Skill deleted successfully." };
 });
 const createExperience = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     const about = yield db_1.prisma.about.findFirst();
     if (!about) {
         throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "About section not found.");
@@ -174,6 +174,7 @@ const createExperience = (payload) => __awaiter(void 0, void 0, void 0, function
             description: (_a = payload.description) !== null && _a !== void 0 ? _a : null,
             startYear: payload.startYear,
             endYear: (_b = payload.endYear) !== null && _b !== void 0 ? _b : "present",
+            achievements: (_c = payload.achievements) !== null && _c !== void 0 ? _c : [],
             aboutId: about.id,
         },
     });
