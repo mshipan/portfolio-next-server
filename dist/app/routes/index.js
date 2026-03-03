@@ -7,6 +7,7 @@ const blog_route_1 = require("../modules/blog/blog.route");
 const project_route_1 = require("../modules/project/project.route");
 const about_route_1 = require("../modules/about/about.route");
 const dashboard_route_1 = require("../modules/dashboard/dashboard.route");
+const contact_route_1 = require("../modules/contact/contact.route");
 exports.router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -24,6 +25,10 @@ const moduleRoutes = [
     {
         path: "/about",
         route: about_route_1.AboutRoutes,
+    },
+    {
+        path: "/contact",
+        route: contact_route_1.ContactRoutes,
     },
     {
         path: "/dashboard",

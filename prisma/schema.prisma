@@ -100,3 +100,12 @@ model Skill {
   aboutId String?
   about About? @relation(fields: [aboutId],references: [id],onDelete: Cascade)
 }
+
+model ContactMessage {
+  id String @id @default(uuid())
+  name String
+  email String
+  message String
+  isRead Boolean @default(false)
+  createdAt DateTime @default(now())
+}
